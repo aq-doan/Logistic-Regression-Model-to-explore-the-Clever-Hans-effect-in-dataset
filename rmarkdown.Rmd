@@ -1,0 +1,207 @@
+---
+title: "Predicting The Success Maze Run of Trained Rats Using Logistic Regression Model"
+author: "Anh Quan Doan"
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(Sleuth3)
+```
+
+# Aim
+
+To determine whether the "Clever Hans" effect is occurring in the data set.
+
+The hypothesis is that there should be no significant different in the rat's running outcome between the both treatment group.
+
+# Background
+
+The data presented here were generated in a manner that aligns with the summary statistics and findings from Rosenthal and Fode's Clever Hans experiment. In this experiment, 12 students were tasked with training rats to navigate a maze. The dataset includes information on the number of successful runs out of 50 recorded over a span of 5 days for each student. Additionally, it captures the students' prior expectations of success, measured on a scale ranging from -10 to 10, and also includes a treatment variable indicating whether the students received fictitious information suggesting that their rats were exceptionally bright.
+
+Variable definitions of `ex2120`:
+
+* Student: identification number of student (not a factor for predicting the success run)
+* PriorExp: Prior expectation of the student regarding the success of rat training, measured on a scale ranging from -10 to 10. 
+* Treatment: A categorical variable with two levels, "bright" and "dull," indicating whether students were informed (falsely) that their rats possessed intelligence or not.
+* Day: The day of the study, varying from 1 to 5.
+* Success: The count of successful maze runs in a single day, out of a total of 50 attempts.
+
+
+# Analysis of the dataset
+
+
+__Computational Methods__
+
+All data exploration, calculation and modelling were computed using R version 4.3.1 using R Studio where most functions used for visualisation and analysis of the dataset were from the base R package. The following functions but not limited to from the base R package were used: `glm()` for fitting the logictic regression model, `cbind()` for creating a 2x2 matrix of number of successes and failures run, `summary()` for retrieving and evaluating the regression model information. `tapply()` to sum the number of success run of both treament type of rats. Functions such as `step()` were use for variable selection. `exp()` and `confint()` were used to calculate the 95% confident interval for the multiplicative effect on the odds of success. `pchisq()` function were used to calculate the p-value for the goodness-of-fit test of the model. `anova()` were also used to assess the best model for the predictions. `seq()`, `c()`, `expand.grid()`, `predict()` and `ggplot()` were used for visualisation of the data. `ex2120` dataset from the library `Sleuth3` were used for the study of this project.
+
+Initial statistical information of the dataset:
+```{r}
+head(ex2120)
+str(ex2120)
+```
+
+As mentioned in the variable definition section, the student variable of this dataset would not be consider as a predicting factor as it only record the ID of the student.
+
+__Odds ratio and its confidence interval__
+
+We began this study by calculating the odds ratio of "bright" rat having more number of success run over "dull" rat and its confidence interval. We first found the sum of successful maze run from each category.
+```{r}
+successes <- tapply(ex2120$Success, ex2120$Treatment, sum)
+```
+
+Similarly we could find the fail runs out of 50 of both and combine both success and fail runs into a 2x2 table for calculation.
+```{r}
+ex2120$Failures <- 50 - ex2120$Success
+failures <- tapply(ex2120$Failures, ex2120$Treatment, sum)
+rats_table <- cbind(successes, failures)
+rats_table
+```
+As we are examining the association or independence between two categories of treatment and having a relatively small sample size to find the binary outcomes with no assumption of normality, Fisher's Exact Test was used to calculate the exact p-value for independence between "dull" and "bright" without confounding variable.
+```{r}
+fisher.test(rats_table)
+```
+By interpreting this table, we can see that the extreme __small p-value__ (less than 0.05) indicating strong evidence against the null hypothesis of no association between the "Treatment" types on the rates of success maze run. The odds ratio of __~2 or 1.986617__ with the confidence interval of __(1.704414, 2.317073)__ shows that the odds of "bright" rats having successful runs over "dull" rats is 2 to 1 ratio.
+
+__Construction of logistic regression model for prediction__
+
+In the preparation for a logistic regression analysis, the first step was to create a two-column matrix (similar to how we did it above to calculate the confidence interval and odds ratio) that recorded the counts of successful outcomes and the counts of unsuccessful outcomes. It's worth noting the difference in the response variable format.
+```{r}
+binaryResponse <- cbind(ex2120$Success, ex2120$Failures)
+binaryResponse[1:10, ] #showing from 0 to 10th row
+```
+We first explored the significant of the predicting variables: `PriorExp`, `Day` and `Treatment` in predicting the  `binaryResponse` as combination of `Success` and `Failures` using an additive model.
+```{r}
+fit_all <-glm(binaryResponse ~ Day + PriorExp + Treatment,data=ex2120, family = binomial (link=logit))
+summary(fit_all)
+```
+It could be observed from the model that __all predictors were statistically significant__ due to their p-value less than 0.05. It also worth noting the AIC of the initial model of 357.98. From this it would not be necessary for any further variable selection process. It was then examined whether existing any significant interaction effect of this model. 
+```{r}
+fit_all.int <-glm(binaryResponse ~ Day*PriorExp*Treatment,data=ex2120, family = binomial (link=logit))
+summary(fit_all.int)
+```
+Variable selection using `step()`:
+```{r}
+fit_all.int.reduced <- step(fit_all.int, test="Chisq")
+summary(fit_all.int.reduced)
+```
+The AIC of the step-wise variable selected model is __357.2__ which is not significantly lower than the original `fit_all` model as well as the interaction term (`Day:Treatment`) was not statistically significant due to p-value larger than 0.05. We further explored the best fit model by using `anova()`.
+```{r}
+anova(fit_all, fit_all.int.reduced, test="Chisq")
+```
+`anova()` showed that the addition of the interaction term was not statistically significantly. To further examine whether to include `Day:Treatment` term or not, we looked at the goodness-of-fit test for both models. 
+
+Deviance goodness-of-fit test for `fit_all`:
+```{r}
+fit_all.residual.deviance <-summary(fit_all)$deviance #deviance
+fit_all.residual.deviance
+fit_all.dof <-summary(fit_all)$df.residual#degree of freedom
+fit_all.dof
+#p-value
+1 - pchisq(fit_all.residual.deviance,fit_all.dof)
+```
+The small p-value of `0.0006624085` showed strong evidence against the `fit_all` model in predicting the success/fail runs of the rats. 
+Deviance goodness-of-fit test for `fit_all.int.reduced`:
+```{r}
+fit_all.int.reduced.residual.deviance <-summary(fit_all.int.reduced)$deviance #deviance
+fit_all.int.reduced.residual.deviance
+fit_all.int.reduced.dof <-summary(fit_all.int.reduced)$df.residual #degree of freedom
+fit_all.int.reduced.dof
+#p-value
+1 - pchisq(fit_all.int.reduced.residual.deviance,fit_all.int.reduced.dof)
+```
+Still, the small p-value of `0.0009291359` showed strong evidence against the `fit_all.int.reduced` model in predicting the success/fail runs of the rats. __Overall, this show how poor the logistic models were in fitting the dataset, although the result of the second model was still better than the initial `fit_all` model. Therefore, it could be noted to an extent that there were not significant interaction effect on the model.__
+
+The final best model for predicting is 
+```{r}
+model<-fit_all.int.reduced
+summary(model)
+```
+
+__Finding the 95% confidence interval for the multiplicative effect on the odds of success__
+
+The analysis task to the dataset was continued by finding the 95% Cls for the multiplicative effect on the odds of success of:
+
+* a rat being classified as 'bright'
+* having another day's practice
+* having a trainer with a one unit increase in their prior expectations.
+
+The confidence intervals could be calculated using the `confint()` function
+As the coefficients of the logistic regression model was in logarithmic scale, taking the exponential using `exp()` for each coefficient was necessary to interpret the results.
+
+```{r}
+exp(confint(fit_all.int.reduced))
+```
+`Day`: it could be seen that the interval __(1.081, 1.251)__ indicates that for each additional day of practice, the odds of success increase by a factor of approximately 1.081 to 1.251 when all other predictor variables are held constant. This suggests that more days of practice are associated with higher odds of success.
+
+`PriorExp`:The interval (1.006, 1.036) suggests that for each one-unit increase in a student's prior expectation of success, the odds of success increase by a factor of approximately 1.006 to 1.036 when all other predictor variables are held constant. This indicates that higher prior expectations are associated with slightly higher odds of success.
+
+`Treatment`: 
+The interval __(0.448 to 0.920)__ represents the multiplicative effect on the odds of success when a rat is classified as "dull" compared to the reference category (often "bright"), while all other predictor variables are held constant. This interval suggests that the "dull" classification is associated with lower odds of success, approximately 0.448 to 0.920 times the odds compared to "bright" rats.
+
+To calculate the 95% confidence interval for the multiplicative effect on the odds of success for a rat being classified as "bright," it was needed to compute the inverse of the interval provided for "Treatment (dull)." This can be done by taking the reciprocal of the upper and lower bounds of that interval.
+
+Upper Bound for "bright" = 1 / 0.920 ≈ 1.087
+
+
+Lower Bound for "bright" = 1 / 0.448 ≈ 2.232
+
+95% Confidence Interval: __(1.087, 2.232)__
+These values represent the multiplicative effect on the odds of success when a rat is classified as "bright" compared to the reference category ("dull"), while holding all other predictor variables constant.
+
+So, for "bright" rats compared to "dull" rats, the 95% confidence interval for the multiplicative effect on the odds of success is approximately 1.087 to 2.232 times the odds. This indicates that "bright" rats have higher odds of success than "dull" rats, with the odds being approximately 1.087 to 2.232 times greater.
+
+__Predicting using the model__
+
+The predictions of the success runs of rats model with `Treatment`, `Day` and `PriorExp` as predicting factors could be visualised using the following R code.
+```{r}
+library(ggplot2)
+
+priorexp <- seq(-5,5,1)
+day <- seq(1,5,1)
+treat <- c("bright","dull")
+grid <- expand.grid(PriorExp=priorexp, Treatment=treat, Day=day)
+
+pr <- predict(model, newdata = grid, type="response")
+toPlot <- cbind(grid, pr)
+p <- ggplot(toPlot, aes(x=Day, y=pr, color=as.factor(PriorExp)))
+p + geom_line() + facet_grid(~Treatment) +  labs(
+  x = "Day",                   # x-axis label
+  y = "Probability of Success",    # y-axis label
+)
+```
+From the visualisation above, it could be confirmed with the above analysis that the `dull` rats performed worst than `bright` rats even though this was fictitious provided information. It also worth noting that, the model showed positive correlation between the predicting factors. By the model, the a `bright` rat, with highest prior expectation (-10 to 10), and highest day of the study (from 1 to 5) would have the most successful runs probability.
+
+As discovered previously, the constructed logistic regression model did not fit well with the dataset, hence, doing poorly in predicting the results. This could be verified if we visualised the actual dataset.
+```{r}
+p <- ggplot(ex2120, aes(x=Day, y= Success, group = Student))
+
+p + labs(
+  x = "Day",                   # x-axis label
+  y = "Number of Success Runs",    # y-axis label
+  title = "Graph of Successful Runs of Rat by Day with Treatment and Prior Expectation"  # Plot title
+)+ geom_line(aes(color=PriorExp)) + facet_wrap(~Treatment) + theme_bw()
+```
+
+# Discussion
+
+In summary, the analysis of the Clever Hans experiment data provides strong evidence supporting the presence of the "Clever Hans" effect. This effect refutes the initial hypothesis that there should be no difference in the success rates of "bright" and "dull" rats.
+
+The key findings are as follows:
+
+* The analysis reveals a significant difference in the successful odds between "bright" and "dull" rats in terms of their success in maze runs. This is indicated by the odds ratio of approximately 2.
+
+* Treatment Impact: The classification of rats as "bright" or "dull" significantly impacts their likelihood of successful maze runs. "Bright" rats consistently outperform "dull" rats in this fictitious experiment.
+
+* Predictor Effects: The analysis further highlights the influence of other factors. More days of practice and higher prior expectations are associated with increased odds of success, reinforcing the idea that these variables contribute to the outcomes.
+
+In conclusion, this study's results provide compelling evidence that the beliefs and expectations of the students regarding the "treatment" of their rats play a substantial role in influencing the success of the rats in completing the maze runs. Specifically, "bright" rats, with their positive classification and likely higher expectations, exhibit a higher likelihood of success compared to "dull" rats. This observation challenges the assumption of impartiality in the study and underscores the impact of human perception on experimental outcomes.
+
+# Reference
+
+This study was done as an assignment for KMA253 Data Handling and Statistics 2 from the University of Tasmania. 
+All resources and information required for this study were obtained from information provided by Dr. Barbara Holland.

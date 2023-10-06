@@ -1,0 +1,796 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Predicting The Success Maze Run of Trained Rats Using Logistic Regression Model},
+  pdfauthor={Anh Quan Doan},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Predicting The Success Maze Run of Trained Rats Using Logistic
+Regression Model}
+\author{Anh Quan Doan}
+\date{2023-10-06}
+
+\begin{document}
+\maketitle
+
+\hypertarget{aim}{%
+\section{Aim}\label{aim}}
+
+To determine whether the ``Clever Hans'' effect is occurring in the data
+set.
+
+The hypothesis is that there should be no significant different in the
+rat's running outcome between the both treatment group.
+
+\hypertarget{background}{%
+\section{Background}\label{background}}
+
+The data presented here were generated in a manner that aligns with the
+summary statistics and findings from Rosenthal and Fode's Clever Hans
+experiment. In this experiment, 12 students were tasked with training
+rats to navigate a maze. The dataset includes information on the number
+of successful runs out of 50 recorded over a span of 5 days for each
+student. Additionally, it captures the students' prior expectations of
+success, measured on a scale ranging from -10 to 10, and also includes a
+treatment variable indicating whether the students received fictitious
+information suggesting that their rats were exceptionally bright.
+
+Variable definitions of \texttt{ex2120}:
+
+\begin{itemize}
+\tightlist
+\item
+  Student: identification number of student (not a factor for predicting
+  the success run)
+\item
+  PriorExp: Prior expectation of the student regarding the success of
+  rat training, measured on a scale ranging from -10 to 10.
+\item
+  Treatment: A categorical variable with two levels, ``bright'' and
+  ``dull,'' indicating whether students were informed (falsely) that
+  their rats possessed intelligence or not.
+\item
+  Day: The day of the study, varying from 1 to 5.
+\item
+  Success: The count of successful maze runs in a single day, out of a
+  total of 50 attempts.
+\end{itemize}
+
+\hypertarget{analysis-of-the-dataset}{%
+\section{Analysis of the dataset}\label{analysis-of-the-dataset}}
+
+\textbf{Computational Methods}
+
+All data exploration, calculation and modelling were computed using R
+version 4.3.1 using R Studio where most functions used for visualisation
+and analysis of the dataset were from the base R package. The following
+functions but not limited to from the base R package were used:
+\texttt{glm()} for fitting the logictic regression model,
+\texttt{cbind()} for creating a 2x2 matrix of number of successes and
+failures run, \texttt{summary()} for retrieving and evaluating the
+regression model information. \texttt{tapply()} to sum the number of
+success run of both treament type of rats. Functions such as
+\texttt{step()} were use for variable selection. \texttt{exp()} and
+\texttt{confint()} were used to calculate the 95\% confident interval
+for the multiplicative effect on the odds of success. \texttt{pchisq()}
+function were used to calculate the p-value for the goodness-of-fit test
+of the model. \texttt{anova()} were also used to assess the best model
+for the predictions. \texttt{seq()}, \texttt{c()},
+\texttt{expand.grid()}, \texttt{predict()} and \texttt{ggplot()} were
+used for visualisation of the data. \texttt{ex2120} dataset from the
+library \texttt{Sleuth3} were used for the study of this project.
+
+Initial statistical information of the dataset:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(ex2120)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Student PriorExp Treatment Day Success
+## 1       1       -7      dull   1      10
+## 2       1       -7      dull   2      13
+## 3       1       -7      dull   3      12
+## 4       1       -7      dull   4      12
+## 5       1       -7      dull   5       9
+## 6       2       -6    bright   1      18
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{str}\NormalTok{(ex2120)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    60 obs. of  5 variables:
+##  $ Student  : int  1 1 1 1 1 2 2 2 2 2 ...
+##  $ PriorExp : int  -7 -7 -7 -7 -7 -6 -6 -6 -6 -6 ...
+##  $ Treatment: Factor w/ 2 levels "bright","dull": 2 2 2 2 2 1 1 1 1 1 ...
+##  $ Day      : int  1 2 3 4 5 1 2 3 4 5 ...
+##  $ Success  : int  10 13 12 12 9 18 20 21 23 30 ...
+\end{verbatim}
+
+As mentioned in the variable definition section, the student variable of
+this dataset would not be consider as a predicting factor as it only
+record the ID of the student.
+
+\textbf{Odds ratio and its confidence interval}
+
+We began this study by calculating the odds ratio of ``bright'' rat
+having more number of success run over ``dull'' rat and its confidence
+interval. We first found the sum of successful maze run from each
+category.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{successes }\OtherTok{\textless{}{-}} \FunctionTok{tapply}\NormalTok{(ex2120}\SpecialCharTok{$}\NormalTok{Success, ex2120}\SpecialCharTok{$}\NormalTok{Treatment, sum)}
+\end{Highlighting}
+\end{Shaded}
+
+Similarly we could find the fail runs out of 50 of both and combine both
+success and fail runs into a 2x2 table for calculation.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ex2120}\SpecialCharTok{$}\NormalTok{Failures }\OtherTok{\textless{}{-}} \DecValTok{50} \SpecialCharTok{{-}}\NormalTok{ ex2120}\SpecialCharTok{$}\NormalTok{Success}
+\NormalTok{failures }\OtherTok{\textless{}{-}} \FunctionTok{tapply}\NormalTok{(ex2120}\SpecialCharTok{$}\NormalTok{Failures, ex2120}\SpecialCharTok{$}\NormalTok{Treatment, sum)}
+\NormalTok{rats\_table }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(successes, failures)}
+\NormalTok{rats\_table}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        successes failures
+## bright       678      822
+## dull         440     1060
+\end{verbatim}
+
+As we are examining the association or independence between two
+categories of treatment and having a relatively small sample size to
+find the binary outcomes with no assumption of normality, Fisher's Exact
+Test was used to calculate the exact p-value for independence between
+``dull'' and ``bright'' without confounding variable.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{fisher.test}\NormalTok{(rats\_table)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Fisher's Exact Test for Count Data
+## 
+## data:  rats_table
+## p-value < 2.2e-16
+## alternative hypothesis: true odds ratio is not equal to 1
+## 95 percent confidence interval:
+##  1.704414 2.317073
+## sample estimates:
+## odds ratio 
+##   1.986617
+\end{verbatim}
+
+By interpreting this table, we can see that the extreme \textbf{small
+p-value} (less than 0.05) indicating strong evidence against the null
+hypothesis of no association between the ``Treatment'' types on the
+rates of success maze run. The odds ratio of \textbf{\textasciitilde2 or
+1.986617} with the confidence interval of \textbf{(1.704414, 2.317073)}
+shows that the odds of ``bright'' rats having successful runs over
+``dull'' rats is 2 to 1 ratio.
+
+\textbf{Construction of logistic regression model for prediction}
+
+In the preparation for a logistic regression analysis, the first step
+was to create a two-column matrix (similar to how we did it above to
+calculate the confidence interval and odds ratio) that recorded the
+counts of successful outcomes and the counts of unsuccessful outcomes.
+It's worth noting the difference in the response variable format.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{binaryResponse }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(ex2120}\SpecialCharTok{$}\NormalTok{Success, ex2120}\SpecialCharTok{$}\NormalTok{Failures)}
+\NormalTok{binaryResponse[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{, ] }\CommentTok{\#showing from 0 to 10th row}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       [,1] [,2]
+##  [1,]   10   40
+##  [2,]   13   37
+##  [3,]   12   38
+##  [4,]   12   38
+##  [5,]    9   41
+##  [6,]   18   32
+##  [7,]   20   30
+##  [8,]   21   29
+##  [9,]   23   27
+## [10,]   30   20
+\end{verbatim}
+
+We first explored the significant of the predicting variables:
+\texttt{PriorExp}, \texttt{Day} and \texttt{Treatment} in predicting the
+\texttt{binaryResponse} as combination of \texttt{Success} and
+\texttt{Failures} using an additive model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit\_all }\OtherTok{\textless{}{-}}\FunctionTok{glm}\NormalTok{(binaryResponse }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Day }\SpecialCharTok{+}\NormalTok{ PriorExp }\SpecialCharTok{+}\NormalTok{ Treatment,}\AttributeTok{data=}\NormalTok{ex2120, }\AttributeTok{family =} \FunctionTok{binomial}\NormalTok{ (}\AttributeTok{link=}\NormalTok{logit))}
+\FunctionTok{summary}\NormalTok{(fit\_all)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = binaryResponse ~ Day + PriorExp + Treatment, family = binomial(link = logit), 
+##     data = ex2120)
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)   -0.54578    0.09789  -5.576 2.47e-08 ***
+## Day            0.10910    0.02725   4.004 6.22e-05 ***
+## PriorExp       0.02071    0.00736   2.814   0.0049 ** 
+## Treatmentdull -0.71976    0.07798  -9.230  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 201.543  on 59  degrees of freedom
+## Residual deviance:  96.264  on 56  degrees of freedom
+## AIC: 357.98
+## 
+## Number of Fisher Scoring iterations: 4
+\end{verbatim}
+
+It could be observed from the model that \textbf{all predictors were
+statistically significant} due to their p-value less than 0.05. It also
+worth noting the AIC of the initial model of 357.98. From this it would
+not be necessary for any further variable selection process. It was then
+examined whether existing any significant interaction effect of this
+model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit\_all.int }\OtherTok{\textless{}{-}}\FunctionTok{glm}\NormalTok{(binaryResponse }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Day}\SpecialCharTok{*}\NormalTok{PriorExp}\SpecialCharTok{*}\NormalTok{Treatment,}\AttributeTok{data=}\NormalTok{ex2120, }\AttributeTok{family =} \FunctionTok{binomial}\NormalTok{ (}\AttributeTok{link=}\NormalTok{logit))}
+\FunctionTok{summary}\NormalTok{(fit\_all.int)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = binaryResponse ~ Day * PriorExp * Treatment, family = binomial(link = logit), 
+##     data = ex2120)
+## 
+## Coefficients:
+##                              Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)                -0.6570539  0.1270570  -5.171 2.32e-07 ***
+## Day                         0.1456761  0.0380077   3.833 0.000127 ***
+## PriorExp                    0.0086119  0.0229570   0.375 0.707563    
+## Treatmentdull              -0.4120564  0.1986343  -2.074 0.038038 *  
+## Day:PriorExp                0.0042670  0.0068853   0.620 0.535439    
+## Day:Treatmentdull          -0.0998335  0.0594213  -1.680 0.092939 .  
+## PriorExp:Treatmentdull     -0.0044880  0.0352985  -0.127 0.898827    
+## Day:PriorExp:Treatmentdull  0.0008453  0.0105656   0.080 0.936234    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 201.543  on 59  degrees of freedom
+## Residual deviance:  92.684  on 52  degrees of freedom
+## AIC: 362.4
+## 
+## Number of Fisher Scoring iterations: 4
+\end{verbatim}
+
+Variable selection using \texttt{step()}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit\_all.int.reduced }\OtherTok{\textless{}{-}} \FunctionTok{step}\NormalTok{(fit\_all.int, }\AttributeTok{test=}\StringTok{"Chisq"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Start:  AIC=362.4
+## binaryResponse ~ Day * PriorExp * Treatment
+## 
+##                          Df Deviance   AIC       LRT Pr(>Chi)
+## - Day:PriorExp:Treatment  1   92.690 360.4 0.0064004   0.9362
+## <none>                        92.684 362.4                   
+## 
+## Step:  AIC=360.4
+## binaryResponse ~ Day + PriorExp + Treatment + Day:PriorExp + 
+##     Day:Treatment + PriorExp:Treatment
+## 
+##                      Df Deviance    AIC     LRT Pr(>Chi)  
+## - PriorExp:Treatment  1   92.707 358.42 0.01671  0.89714  
+## - Day:PriorExp        1   93.475 359.19 0.78483  0.37567  
+## <none>                    92.690 360.40                   
+## - Day:Treatment       1   95.840 361.55 3.14966  0.07594 .
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Step:  AIC=358.42
+## binaryResponse ~ Day + PriorExp + Treatment + Day:PriorExp + 
+##     Day:Treatment
+## 
+##                 Df Deviance    AIC     LRT Pr(>Chi)  
+## - Day:PriorExp   1   93.490 357.20 0.78335  0.37612  
+## <none>               92.707 358.42                   
+## - Day:Treatment  1   95.856 359.57 3.14910  0.07597 .
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Step:  AIC=357.2
+## binaryResponse ~ Day + PriorExp + Treatment + Day:Treatment
+## 
+##                 Df Deviance    AIC    LRT Pr(>Chi)   
+## <none>               93.490 357.20                   
+## - Day:Treatment  1   96.264 357.98 2.7739 0.095811 . 
+## - PriorExp       1  101.473 363.19 7.9827 0.004723 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(fit\_all.int.reduced)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = binaryResponse ~ Day + PriorExp + Treatment + Day:Treatment, 
+##     family = binomial(link = logit), data = ex2120)
+## 
+## Coefficients:
+##                    Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)       -0.671945   0.124306  -5.406 6.46e-08 ***
+## Day                0.150800   0.037096   4.065 4.80e-05 ***
+## PriorExp           0.020741   0.007366   2.816  0.00487 ** 
+## Treatmentdull     -0.442043   0.183631  -2.407  0.01607 *  
+## Day:Treatmentdull -0.091102   0.054709  -1.665  0.09587 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 201.54  on 59  degrees of freedom
+## Residual deviance:  93.49  on 55  degrees of freedom
+## AIC: 357.2
+## 
+## Number of Fisher Scoring iterations: 4
+\end{verbatim}
+
+The AIC of the step-wise variable selected model is \textbf{357.2} which
+is not significantly lower than the original \texttt{fit\_all} model as
+well as the interaction term (\texttt{Day:Treatment}) was not
+statistically significant due to p-value larger than 0.05. We further
+explored the best fit model by using \texttt{anova()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{anova}\NormalTok{(fit\_all, fit\_all.int.reduced, }\AttributeTok{test=}\StringTok{"Chisq"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Deviance Table
+## 
+## Model 1: binaryResponse ~ Day + PriorExp + Treatment
+## Model 2: binaryResponse ~ Day + PriorExp + Treatment + Day:Treatment
+##   Resid. Df Resid. Dev Df Deviance Pr(>Chi)  
+## 1        56     96.264                       
+## 2        55     93.490  1   2.7739  0.09581 .
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\texttt{anova()} showed that the addition of the interaction term was
+not statistically significantly. To further examine whether to include
+\texttt{Day:Treatment} term or not, we looked at the goodness-of-fit
+test for both models.
+
+Deviance goodness-of-fit test for \texttt{fit\_all}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit\_all.residual.deviance }\OtherTok{\textless{}{-}}\FunctionTok{summary}\NormalTok{(fit\_all)}\SpecialCharTok{$}\NormalTok{deviance }\CommentTok{\#deviance}
+\NormalTok{fit\_all.residual.deviance}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 96.26403
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit\_all.dof }\OtherTok{\textless{}{-}}\FunctionTok{summary}\NormalTok{(fit\_all)}\SpecialCharTok{$}\NormalTok{df.residual}\CommentTok{\#degree of freedom}
+\NormalTok{fit\_all.dof}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 56
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#p{-}value}
+\DecValTok{1} \SpecialCharTok{{-}} \FunctionTok{pchisq}\NormalTok{(fit\_all.residual.deviance,fit\_all.dof)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.0006624085
+\end{verbatim}
+
+The small p-value of \texttt{0.0006624085} showed strong evidence
+against the \texttt{fit\_all} model in predicting the success/fail runs
+of the rats. Deviance goodness-of-fit test for
+\texttt{fit\_all.int.reduced}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit\_all.int.reduced.residual.deviance }\OtherTok{\textless{}{-}}\FunctionTok{summary}\NormalTok{(fit\_all.int.reduced)}\SpecialCharTok{$}\NormalTok{deviance }\CommentTok{\#deviance}
+\NormalTok{fit\_all.int.reduced.residual.deviance}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 93.49011
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit\_all.int.reduced.dof }\OtherTok{\textless{}{-}}\FunctionTok{summary}\NormalTok{(fit\_all.int.reduced)}\SpecialCharTok{$}\NormalTok{df.residual }\CommentTok{\#degree of freedom}
+\NormalTok{fit\_all.int.reduced.dof}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 55
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#p{-}value}
+\DecValTok{1} \SpecialCharTok{{-}} \FunctionTok{pchisq}\NormalTok{(fit\_all.int.reduced.residual.deviance,fit\_all.int.reduced.dof)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.0009291359
+\end{verbatim}
+
+Still, the small p-value of \texttt{0.0009291359} showed strong evidence
+against the \texttt{fit\_all.int.reduced} model in predicting the
+success/fail runs of the rats. \textbf{Overall, this show how poor the
+logistic models were in fitting the dataset, although the result of the
+second model was still better than the initial \texttt{fit\_all} model.
+Therefore, it could be noted to an extent that there were not
+significant interaction effect on the model.}
+
+The final best model for predicting is
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model}\OtherTok{\textless{}{-}}\NormalTok{fit\_all.int.reduced}
+\FunctionTok{summary}\NormalTok{(model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = binaryResponse ~ Day + PriorExp + Treatment + Day:Treatment, 
+##     family = binomial(link = logit), data = ex2120)
+## 
+## Coefficients:
+##                    Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)       -0.671945   0.124306  -5.406 6.46e-08 ***
+## Day                0.150800   0.037096   4.065 4.80e-05 ***
+## PriorExp           0.020741   0.007366   2.816  0.00487 ** 
+## Treatmentdull     -0.442043   0.183631  -2.407  0.01607 *  
+## Day:Treatmentdull -0.091102   0.054709  -1.665  0.09587 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 201.54  on 59  degrees of freedom
+## Residual deviance:  93.49  on 55  degrees of freedom
+## AIC: 357.2
+## 
+## Number of Fisher Scoring iterations: 4
+\end{verbatim}
+
+\textbf{Finding the 95\% confidence interval for the multiplicative
+effect on the odds of success}
+
+The analysis task to the dataset was continued by finding the 95\% Cls
+for the multiplicative effect on the odds of success of:
+
+\begin{itemize}
+\tightlist
+\item
+  a rat being classified as `bright'
+\item
+  having another day's practice
+\item
+  having a trainer with a one unit increase in their prior expectations.
+\end{itemize}
+
+The confidence intervals could be calculated using the
+\texttt{confint()} function As the coefficients of the logistic
+regression model was in logarithmic scale, taking the exponential using
+\texttt{exp()} for each coefficient was necessary to interpret the
+results.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{exp}\NormalTok{(}\FunctionTok{confint}\NormalTok{(fit\_all.int.reduced))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Waiting for profiling to be done...
+\end{verbatim}
+
+\begin{verbatim}
+##                       2.5 %    97.5 %
+## (Intercept)       0.3997426 0.6508713
+## Day               1.0814358 1.2507690
+## PriorExp          1.0063595 1.0358488
+## Treatmentdull     0.4479943 0.9204163
+## Day:Treatmentdull 0.8200454 1.0162374
+\end{verbatim}
+
+\texttt{Day}: it could be seen that the interval \textbf{(1.081, 1.251)}
+indicates that for each additional day of practice, the odds of success
+increase by a factor of approximately 1.081 to 1.251 when all other
+predictor variables are held constant. This suggests that more days of
+practice are associated with higher odds of success.
+
+\texttt{PriorExp}:The interval (1.006, 1.036) suggests that for each
+one-unit increase in a student's prior expectation of success, the odds
+of success increase by a factor of approximately 1.006 to 1.036 when all
+other predictor variables are held constant. This indicates that higher
+prior expectations are associated with slightly higher odds of success.
+
+\texttt{Treatment}: The interval \textbf{(0.448 to 0.920)} represents
+the multiplicative effect on the odds of success when a rat is
+classified as ``dull'' compared to the reference category (often
+``bright''), while all other predictor variables are held constant. This
+interval suggests that the ``dull'' classification is associated with
+lower odds of success, approximately 0.448 to 0.920 times the odds
+compared to ``bright'' rats.
+
+To calculate the 95\% confidence interval for the multiplicative effect
+on the odds of success for a rat being classified as ``bright,'' it was
+needed to compute the inverse of the interval provided for ``Treatment
+(dull).'' This can be done by taking the reciprocal of the upper and
+lower bounds of that interval.
+
+Upper Bound for ``bright'' = 1 / 0.920 ≈ 1.087
+
+Lower Bound for ``bright'' = 1 / 0.448 ≈ 2.232
+
+95\% Confidence Interval: \textbf{(1.087, 2.232)} These values represent
+the multiplicative effect on the odds of success when a rat is
+classified as ``bright'' compared to the reference category (``dull''),
+while holding all other predictor variables constant.
+
+So, for ``bright'' rats compared to ``dull'' rats, the 95\% confidence
+interval for the multiplicative effect on the odds of success is
+approximately 1.087 to 2.232 times the odds. This indicates that
+``bright'' rats have higher odds of success than ``dull'' rats, with the
+odds being approximately 1.087 to 2.232 times greater.
+
+\textbf{Predicting using the model}
+
+The predictions of the success runs of rats model with
+\texttt{Treatment}, \texttt{Day} and \texttt{PriorExp} as predicting
+factors could be visualised using the following R code.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+
+\NormalTok{priorexp }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{5}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{1}\NormalTok{)}
+\NormalTok{day }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{1}\NormalTok{)}
+\NormalTok{treat }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"bright"}\NormalTok{,}\StringTok{"dull"}\NormalTok{)}
+\NormalTok{grid }\OtherTok{\textless{}{-}} \FunctionTok{expand.grid}\NormalTok{(}\AttributeTok{PriorExp=}\NormalTok{priorexp, }\AttributeTok{Treatment=}\NormalTok{treat, }\AttributeTok{Day=}\NormalTok{day)}
+
+\NormalTok{pr }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(model, }\AttributeTok{newdata =}\NormalTok{ grid, }\AttributeTok{type=}\StringTok{"response"}\NormalTok{)}
+\NormalTok{toPlot }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(grid, pr)}
+\NormalTok{p }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(toPlot, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Day, }\AttributeTok{y=}\NormalTok{pr, }\AttributeTok{color=}\FunctionTok{as.factor}\NormalTok{(PriorExp)))}
+\NormalTok{p }\SpecialCharTok{+} \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{facet\_grid}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Treatment) }\SpecialCharTok{+}  \FunctionTok{labs}\NormalTok{(}
+  \AttributeTok{x =} \StringTok{"Day"}\NormalTok{,                   }\CommentTok{\# x{-}axis label}
+  \AttributeTok{y =} \StringTok{"Probability of Success"}\NormalTok{,    }\CommentTok{\# y{-}axis label}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{KIT253_files/figure-latex/unnamed-chunk-14-1.pdf} From
+the visualisation above, it could be confirmed with the above analysis
+that the \texttt{dull} rats performed worst than \texttt{bright} rats
+even though this was fictitious provided information. It also worth
+noting that, the model showed positive correlation between the
+predicting factors. By the model, the a \texttt{bright} rat, with
+highest prior expectation (-10 to 10), and highest day of the study
+(from 1 to 5) would have the most successful runs probability.
+
+As discovered previously, the constructed logistic regression model did
+not fit well with the dataset, hence, doing poorly in predicting the
+results. This could be verified if we visualised the actual dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(ex2120, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Day, }\AttributeTok{y=}\NormalTok{ Success, }\AttributeTok{group =}\NormalTok{ Student))}
+
+\NormalTok{p }\SpecialCharTok{+} \FunctionTok{labs}\NormalTok{(}
+  \AttributeTok{x =} \StringTok{"Day"}\NormalTok{,                   }\CommentTok{\# x{-}axis label}
+  \AttributeTok{y =} \StringTok{"Number of Success Runs"}\NormalTok{,    }\CommentTok{\# y{-}axis label}
+  \AttributeTok{title =} \StringTok{"Graph of Successful Runs of Rat by Day with Treatment and Prior Expectation"}  \CommentTok{\# Plot title}
+\NormalTok{)}\SpecialCharTok{+} \FunctionTok{geom\_line}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color=}\NormalTok{PriorExp)) }\SpecialCharTok{+} \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Treatment) }\SpecialCharTok{+} \FunctionTok{theme\_bw}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{KIT253_files/figure-latex/unnamed-chunk-15-1.pdf}
+
+\hypertarget{discussion}{%
+\section{Discussion}\label{discussion}}
+
+In summary, the analysis of the Clever Hans experiment data provides
+strong evidence supporting the presence of the ``Clever Hans'' effect.
+This effect refutes the initial hypothesis that there should be no
+difference in the success rates of ``bright'' and ``dull'' rats.
+
+The key findings are as follows:
+
+\begin{itemize}
+\item
+  The analysis reveals a significant difference in the successful odds
+  between ``bright'' and ``dull'' rats in terms of their success in maze
+  runs. This is indicated by the odds ratio of approximately 2.
+\item
+  Treatment Impact: The classification of rats as ``bright'' or ``dull''
+  significantly impacts their likelihood of successful maze runs.
+  ``Bright'' rats consistently outperform ``dull'' rats in this
+  fictitious experiment.
+\item
+  Predictor Effects: The analysis further highlights the influence of
+  other factors. More days of practice and higher prior expectations are
+  associated with increased odds of success, reinforcing the idea that
+  these variables contribute to the outcomes.
+\end{itemize}
+
+In conclusion, this study's results provide compelling evidence that the
+beliefs and expectations of the students regarding the ``treatment'' of
+their rats play a substantial role in influencing the success of the
+rats in completing the maze runs. Specifically, ``bright'' rats, with
+their positive classification and likely higher expectations, exhibit a
+higher likelihood of success compared to ``dull'' rats. This observation
+challenges the assumption of impartiality in the study and underscores
+the impact of human perception on experimental outcomes.
+
+\hypertarget{reference}{%
+\section{Reference}\label{reference}}
+
+This study was done as an assignment for KMA253 Data Handling and
+Statistics 2 from the University of Tasmania. All resources and
+information required for this study were obtained from information
+provided by Dr.~Barbara Holland.
+
+\end{document}
